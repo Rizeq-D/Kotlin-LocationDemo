@@ -66,4 +66,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.lifecycle.viewmodel.compose) // Compose ViewModel
+    implementation(libs.retrofit) // to make network calls
+    implementation(libs.androidx.compose.runtime)
+    implementation(libs.play.services.location)
 }

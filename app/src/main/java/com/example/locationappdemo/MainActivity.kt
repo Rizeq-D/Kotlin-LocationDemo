@@ -12,18 +12,16 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.locationappdemo.ui.theme.LocationAppDemoTheme
 
 class MainActivity : ComponentActivity() {
@@ -31,27 +29,29 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val viewModel : LocationViewModel = viewModel()
             LocationAppDemoTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background) {
                 }
-                    TheApp()
+                    TheApp(viewModel)
                 }
             }
         }
     }
 
 @Composable
-fun TheApp() {
+fun TheApp(viewModel: LocationViewModel) {
     val context = LocalContext.current
     val locationUnits = LocationUnit(context)
-    LocationDisplay(locationUnit = locationUnits, context = context)
+    LocationDisplay(locationUnit = locationUnits, viewModel, context = context)
 }
 
 @Composable
 fun LocationDisplay(
     locationUnit: LocationUnit,
+    viewModel : LocationViewModel,
     context: Context) {
 
     val requestPermissionLauncher = rememberLauncherForActivityResult(
