@@ -54,12 +54,15 @@ fun LocationDisplay(
     viewModel : LocationViewModel,
     context: Context) {
 
+    val location = viewModel.location.value
+
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
         onResult = {permissions ->
             if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true
                 && permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true) {
                 // we have access to the location
+                locationUnit.requestLocationUpdates(viewModel = viewModel)
             }else{
                 val rationaleRequired = ActivityCompat.shouldShowRequestPermissionRationale(
                     context as MainActivity,
@@ -84,11 +87,16 @@ fun LocationDisplay(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally)
     {
-        Text("Location is not Available")
+        if (location != null){
+            Text("Address: ${location.latitude} ${location.longitude}")
+        }else{
+            Text("The Location is not available")
+        }
         
         Button(onClick = {
             if (locationUnit.hasLocationPermission(context)) {
                 // the permission is already granted
+                locationUnit.requestLocationUpdates(viewModel)
             }else{
                 requestPermissionLauncher.launch(
                     arrayOf(
